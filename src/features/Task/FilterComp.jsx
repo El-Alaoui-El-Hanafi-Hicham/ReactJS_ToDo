@@ -17,7 +17,7 @@ export default function FilterComp({handleFilterFieldChange,setfilter,filter}) {
                 <Typography>Filter</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <form className='d-flex gap-3 align-items-center justify-content-center ' >
+                <form className='d-flex gap-3 align-items-center justify-content-center flex-wrap' >
                     <TextField
                       id=""
                       label="Search"
@@ -30,9 +30,9 @@ export default function FilterComp({handleFilterFieldChange,setfilter,filter}) {
     <div>
     ALL
   <Radio
-  onChange={() => handleFilterFieldChange(null)}
-  checked={null}
-  value=""
+  onChange={() => setfilter(filter=>({...filter,isDone:null }))}
+  checked={filter.isDone==null}
+  value={null}
   label="All"
   name="radio-buttons"
   inputProps={{ 'aria-label': 'All' }}
@@ -43,7 +43,7 @@ Done
 <Radio
   onChange={() => setfilter(filter=>({...filter,isDone:true }))
 }
-  checked={filter.isDone}
+  checked={filter.isDone==true}
   value={true}
   label="Done"
   name="radio-buttons"
@@ -54,7 +54,7 @@ Done
 Not Yet
 <Radio
   onChange={() => setfilter(filter=>({...filter,isDone:false  }))}
-  checked={!filter.isDone}
+  checked={filter.isDone==false}
   value={false}
   label="Not Yet"
   name="radio-buttons"

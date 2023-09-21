@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useAddTaskMutation } from './TaskSlice';
+import {Accordion, AccordionDetails, AccordionSummary, Typography} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function AddTaskComp() {
     const [TaskForm, setTaskForm] = useState({
@@ -31,11 +33,18 @@ function AddTaskComp() {
     } 
   }
   return (
-    <div>
-        HeLLO
-{JSON.stringify(TaskForm)}
+       <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography>ADD Task</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+ 
       <form onSubmit={(event) => handleAddTask(event)}>
-        <div className="mb-3">
+        <div className="mb-3 d-flex flex-column align-items-start" >
           <label htmlFor="exampleInputTitle" className="form-label">
             Title
           </label>
@@ -47,11 +56,9 @@ function AddTaskComp() {
             id="exampleInputTitle"
             aria-describedby="TitleHelp"
           />
-          <div id="TitleHelp" className="form-text">
-            We'll never share your email with anyone else.
-          </div>
+
         </div>
-        <div className="mb-3">
+        <div className="mb-3  d-flex flex-column align-items-start">
           <label htmlFor="exampleInputDescription" className="form-label">
             Description
           </label>
@@ -65,11 +72,11 @@ function AddTaskComp() {
         </div>
 
         <button type="submit" className="btn btn-primary">
-          Submit
+        ADD
         </button>
       </form>
-
-    </div>
+      </AccordionDetails>
+      </Accordion>
   )
 }
 

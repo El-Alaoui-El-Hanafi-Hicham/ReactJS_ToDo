@@ -20,13 +20,14 @@ function ListTasksComp() {
     const [DeleteTask] = useDeleteTaskMutation();
     const [filter, setfilter] = useState({title:'',isDone:null})
     const { isError, isFetching, isLoading, isSuccess, data,refetch  } =useGetTasksQuery(filter);
-    const [openModal, setOpenModal] = React.useState(false);
-    const handleOpenModal = () => setOpen(true);
-    const handleCloseModal = () => setOpen(false);
-useEffect(() => {
-    console.log(filter)
-refetch()
-}, [filter])
+    const [TaskToUpdate, setTaskToUpdate] = useState({
+      id: "",
+      title: "",
+      description: "",
+      isDone: false,
+      date: new Date().toISOString() ,
+    })
+
 
 
 async function handleFilterFieldChange(b){
@@ -58,13 +59,8 @@ async function handleFilterFieldChange(b){
 
   return (
     <div>
-      <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        sx={{ position: "absolute", bottom: 30, right: 30 }}
-        icon={<SpeedDialIcon />}
-        tooltipTitle="Add New Task"
-      ></SpeedDial>
-      <div className="task-list d-flex gap-3">
+
+      <div className="task-list d-flex gap-3 flex-column">
       <FilterComp handleFilterFieldChange={handleFilterFieldChange} setfilter={setfilter} filter={filter}/>
 
         {isLoading && (
@@ -156,9 +152,9 @@ async function handleFilterFieldChange(b){
                   <TableHead>
                     <TableRow>
                       <TableCell align="left">&nbsp;</TableCell>
-                      <TableCell align="left">id</TableCell>
-                      <TableCell align="left">title&nbsp;</TableCell>
-                      <TableCell align="left">description&nbsp;</TableCell>
+                      <TableCell align="left">Title&nbsp;</TableCell>
+                      <TableCell align="left">Description&nbsp;</TableCell>
+                      <TableCell align="left">Date&nbsp;</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -180,10 +176,7 @@ async function handleFilterFieldChange(b){
                               checkedIcon={<TaskAltOutlined />}
                             />
                           </TableCell>
-                          <TableCell component="th" scope="row">
-                            {" "}
-                            {task.id}
-                          </TableCell>
+                        
                           <TableCell component="th" scope="row">
                             {" "}
                             {task.title}
@@ -191,10 +184,21 @@ async function handleFilterFieldChange(b){
                           <TableCell align="left">
                             {task.description.substring(0, 100)}
                           </TableCell>
+                          <TableCell component="th" scope="row">
+                            {" "}
+                            {task.date}
+                          </TableCell>
                           <TableCell align="left">
                           <Tooltip title="Edit">
                               <IconButton
-                                onClick={() =>  handleOpen(task.id)}
+                               data-bs-toggle="modal" data-bs-target="#modifyTaskModal"
+                              onClick={()=>setTaskToUpdate({
+                                id: task.id,
+                                title: task.title,
+                                description: task.description,
+                                isDone: task.isDone,
+                                date: task.date,
+                              })}
                               >
                                 <Edit />
                               </IconButton>
@@ -214,9 +218,10 @@ async function handleFilterFieldChange(b){
               </TableContainer>
               
             </div>
+           
           </>
         )}
-        <EditModal handleCloseModal={handleCloseModal} openModal={openModal}/>
+    <EditModal TaskToUpdate={TaskToUpdate} setTaskToUpdate={setTaskToUpdate} UpdateTask={UpdateTask}/>  
       </div>
     </div>
   );

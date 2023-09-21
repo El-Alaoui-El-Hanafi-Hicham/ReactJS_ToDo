@@ -39,9 +39,7 @@ export const TaskSlice = apiSlice.injectEndpoints({
                 body:data
             }),
             invalidatesTags:['Tasks'],
-            transformResponse:(response)=>{
-                adapter.addOne(response)
-              }
+           
         }), 
         UpdateTask : builder.mutation({
             query:(data)=>({
@@ -58,13 +56,7 @@ export const TaskSlice = apiSlice.injectEndpoints({
                 body:data
             })
         }),
-        // FilterTasks:builder.query({
-        //     query:({title,status})=>`/task?title=${title}&isDone=${status}`,
-        //     providesTags:["Tasks"],
-        //     transformResponse:(response)=>{
-        //         adapter.setAll(initialState,response)
-        //       }
-        // }),
+ 
         DeleteTask :builder.mutation({
             query:(id)=>({
                 url : "/task/"+id,

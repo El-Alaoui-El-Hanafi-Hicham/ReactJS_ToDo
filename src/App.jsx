@@ -25,14 +25,12 @@ function App() {
  
 
   return (
-    <>
-     <Button variant="ADD Task" color="primary">
-     ADD Task
-     </Button>
+    <div className="p-3 d-flex flex-column gap-5">
+
           <AddTaskComp />
      <ListTasksComp />
           
-    </>
+    </div>
   );
 }
 
