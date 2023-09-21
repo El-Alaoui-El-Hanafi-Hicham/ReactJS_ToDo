@@ -1,14 +1,27 @@
 import {Task} from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { Button, Modal } from 'bootstrap';
 import React from 'react'
+import Swal from 'sweetalert2';
 
 function EditModal({TaskToUpdate,setTaskToUpdate,UpdateTask}) {
   function handleUpdateTask(e){
 setTaskToUpdate(prev=>({...prev,[e.target.name]:e.target.value}))
   }
  async function UpdateSelectedTask(){
+   console.log(TaskToUpdate)
     await UpdateTask(TaskToUpdate)
+      Swal.fire({
+        icon: 'success', // Can be 'success', 'error', 'warning', 'info', etc.
+        title: 'Task Updated',
+        text: `Task ${TaskToUpdate.title} Added Succesfully`,
+        toast: true, // This makes it a toast notification
+        position: 'top-end', // You can change the position
+        showConfirmButton: false, // Hide the "OK" button
+        timer: 3000 // Auto close after 3 seconds
+      });
+
+
   }
     
     return (
@@ -21,13 +34,50 @@ setTaskToUpdate(prev=>({...prev,[e.target.name]:e.target.value}))
           </div>
           <div class="modal-body">
             <form>
-              <div class="mb-3">
-                <label for="taskTitle" class="form-label">Title</label>
-                <input type="text" class="form-control"value={TaskToUpdate?.title} onChange={(e)=>handleUpdateTask(e)} name="title" id="taskTitle" placeholder="Enter task title"/>
+            
+              <div className="mb-3 d-flex flex-column align-items-start col-md-6 col-sm-12">
+                <FormControl fullWidth>
+                  <TextField
+                    type="text"
+                    id="outlined-basic"
+                    name="title"
+                    value={TaskToUpdate?.title} onChange={(e)=>handleUpdateTask(e)} 
+           label="Title"
+                    variant="outlined"
+                  />
+                </FormControl>
               </div>
-              <div class="mb-3">
-                <label for="taskDescription" class="form-label">Description</label>
-                <textarea class="form-control" id="taskDescription" name="description" value={TaskToUpdate?.description} onChange={(e)=>handleUpdateTask(e)} rows="3" placeholder="Enter task description"></textarea>
+              <div className="mb-3">
+                <FormControl fullWidth>
+                  <TextField
+                    type="text"
+                    id="outlined-basic"
+                    name="description"
+                    value={TaskToUpdate?.description} onChange={(e)=>handleUpdateTask(e)}
+                    label="Description"
+                    variant="outlined"
+                  />
+                </FormControl>
+              </div>
+              <div className="mb-3">
+              <FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">
+    Priority
+  </InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    label="Age"
+    name="priority"
+    value={TaskToUpdate.priority}
+    required // Add the required attribute
+    onChange={(e) => handleUpdateTask(e)}
+  >
+    <MenuItem value="High">High Priority</MenuItem>
+    <MenuItem value="Medium">Medium Priority</MenuItem>
+    <MenuItem value="Low">Low Priority</MenuItem>
+  </Select>
+</FormControl>
               </div>
             </form>
           </div>

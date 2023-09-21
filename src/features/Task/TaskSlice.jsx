@@ -11,14 +11,18 @@ import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 export const TaskSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getTasks: builder.query({
-      query: ({ title, isDone }) => {
+      query: ({ title, isDone,priority }) => {
         let queryUrl = "/task";
         if (title != "") {
           queryUrl += `?title=${title}`;
         }
-        if (isDone !== null) {
-          queryUrl += title ? `&isDone=${isDone}` : `?isDone=${isDone}`;
+        if (priority !== '') {
+          queryUrl += title ? `&priority=${priority}`:`?priority=${priority}`;
         }
+        if (isDone !== null) {
+          queryUrl += title || priority? `&isDone=${isDone}` : `?isDone=${isDone}`;
+        }
+        console.log(queryUrl)
         return queryUrl;
       },
       providesTags: (result = [], error, arg) => [

@@ -3,6 +3,8 @@ import {Accordion,AccordionDetails,AccordionSummary,Alert,Button,Checkbox,IconBu
 import { Edit, EditOff, EditTwoTone } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TaskAltOutlined, TaskAltTwoTone } from "@mui/icons-material";
+import Swal from 'sweetalert2';
+
 import {
   useGetTasksQuery,
   useUpdateTaskMutation,
@@ -17,15 +19,15 @@ import EditModal from "./EditModal";
 function ListTasksComp() {
 
     const [UpdateTask, { isSuccess: UpdateIsSuccess }] = useUpdateTaskMutation();
-    const [DeleteTask] = useDeleteTaskMutation();
-    const [filter, setfilter] = useState({title:'',isDone:null})
+    const [DeleteTask,{isSuccess:isDeleted}] = useDeleteTaskMutation();
+    const [filter, setfilter] = useState({title:'',isDone:null,  priority:"" })
     const { isError, isFetching, isLoading, isSuccess, data,refetch  } =useGetTasksQuery(filter);
     const [TaskToUpdate, setTaskToUpdate] = useState({
       id: "",
       title: "",
       description: "",
       isDone: false,
-      date: new Date().toISOString() ,
+      priority:"Medium" ,
     })
 
 
@@ -48,13 +50,45 @@ async function handleFilterFieldChange(b){
   async function handleUpdateTask(task) {
     task = { ...task, isDone: !task.isDone };
     await UpdateTask(task);
+    if(task.isDone){
+
     
-    console.log("IT IS " +openSnackBar)
+    Swal.fire({
+      icon: 'success', // Can be 'success', 'error', 'warning', 'info', etc.
+      title: 'Task Done',
+      text: 'Task Status changed To Done',
+      toast: true, // This makes it a toast notification
+      position: 'top-end', // You can change the position
+      showConfirmButton: false, // Hide the "OK" button
+      timer: 3000 // Auto close after 3 seconds
+    });
+  }else{
+    Swal.fire({
+      icon: 'success', // Can be 'success', 'error', 'warning', 'info', etc.
+      title: 'Task To Do',
+      text: 'Task Status changed To TODO',
+      toast: true, // This makes it a toast notification
+      position: 'top-end', // You can change the position
+      showConfirmButton: false, // Hide the "OK" button
+      timer: 3000 // Auto close after 3 seconds
+    });
+  }
     handleClickOpenSnackBar()
   }
 
   async function handleDeleteTask(id) {
     await DeleteTask(id);
+    if(isDeleted){
+      Swal.fire({
+        icon: 'success', // Can be 'success', 'error', 'warning', 'info', etc.
+        title: 'Task Deleted',
+        text: 'Task Deleted Successfuly',
+        toast: true, // This makes it a toast notification
+        position: 'top-end', // You can change the position
+        showConfirmButton: false, // Hide the "OK" button
+        timer: 3000 // Auto close after 3 seconds
+      });
+    }
   }
 
   return (
@@ -72,6 +106,7 @@ async function handleFilterFieldChange(b){
                   <TableCell align="left">id</TableCell>
                   <TableCell align="left">title&nbsp;</TableCell>
                   <TableCell align="left">description&nbsp;</TableCell>
+                  <TableCell align="left">Priority&nbsp;</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -94,6 +129,9 @@ async function handleFilterFieldChange(b){
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {" "}
+                    <Skeleton animation="wave" />
+                  </TableCell>
+                  <TableCell align="left">
                     <Skeleton animation="wave" />
                   </TableCell>
                   <TableCell align="left">
@@ -155,6 +193,7 @@ async function handleFilterFieldChange(b){
                       <TableCell align="left">Title&nbsp;</TableCell>
                       <TableCell align="left">Description&nbsp;</TableCell>
                       <TableCell align="left">Priority&nbsp;</TableCell>
+                      <TableCell align="left">Actions&nbsp;</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -187,9 +226,9 @@ async function handleFilterFieldChange(b){
                        
                           <TableCell component="th" scope="row">
                             {" "}
-                            {task.priority=="High" &&  <><WarningIcon/> <Chip label="High" color="danger" /></>}
+                            {task.priority=="High" &&  <> <Chip label="High" color="error" /></>}
                             {task.priority=="Medium" &&  <><Chip label="Medium" color="success" /></> }
-                            {task.priority=="Low" &&   <Chip label="Low" color="danger" />}
+                            {task.priority=="Low" &&   <Chip label="Low" color="primary" />}
                           </TableCell>
                           <TableCell align="left">
                           <Tooltip title="Edit">
@@ -200,7 +239,7 @@ async function handleFilterFieldChange(b){
                                 title: task.title,
                                 description: task.description,
                                 isDone: task.isDone,
-                                date: task.date,
+                                priority: task.priority,
                               })}
                               >
                                 <Edit />

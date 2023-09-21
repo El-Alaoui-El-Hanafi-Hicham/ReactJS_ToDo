@@ -1,30 +1,30 @@
-import React, { useState } from 'react'
-import {Accordion,AccordionDetails,AccordionSummary,Typography, TextField, FormControl, FormLabel, Radio,} from "@mui/material";
+import React, { useEffect, useState } from 'react'
+import {Accordion,AccordionDetails,AccordionSummary,Typography, TextField, FormControl, FormLabel, Radio, InputLabel, Select, MenuItem, Paper,} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useFilterTasksQuery } from './TaskSlice';
+import { styled } from '@mui/material/styles';
 
+const DemoPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  ...theme.typography.body2,
+  textAlign: 'center',
+}));
 export default function FilterComp({handleFilterFieldChange,setfilter,filter}) {
-
+useEffect(() => {
+ console.log(filter)
+}, [filter]);
     return (
-    <div>
-
-<Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Filter</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <form className='d-flex gap-3 align-items-center justify-content-center flex-wrap' >
+<DemoPaper square={false}>
+            
+                <form className='row' >
                     <TextField
                       id=""
                       label="Search"
+                      className='col-md-4 col-sm-6'
  name="search"                     
  onChange={(e) => setfilter(filter=>({...filter,title:e.target.value }))} 
-                    />
-                   <FormControl>
+                     />
+                   <FormControl   className='col-md-4 col-sm-6'>
   <FormLabel id="demo-radio-buttons-group-label">Status</FormLabel>
   <div className='d-flex'>
     <div>
@@ -63,10 +63,24 @@ TODO
 </div>
     </div>
 </FormControl>
-                </form>
-              </AccordionDetails>
-            </Accordion>
+<FormControl    className='col-md-4 col-sm-6'>
+<InputLabel id="demo-simple-select-label">Priority</InputLabel>
 
-    </div>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={filter.priority}
+                    label="Priority"
+                    name="priority"
+                    onChange={(e) => setfilter(filter=>({...filter,priority:e.target.value }))} 
+                  >
+                    <MenuItem value={"High"}>High Priority</MenuItem>
+                    <MenuItem value={"Medium"}>Medium Priority</MenuItem>
+                    <MenuItem value={"Low"}>Low Priority</MenuItem>
+                  </Select>
+                </FormControl>
+                </form>
+                </DemoPaper>
+
   )
 }
