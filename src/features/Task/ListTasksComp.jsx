@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Accordion,AccordionDetails,AccordionSummary,Alert,Button,Checkbox,IconButton,Paper,Skeleton,Snackbar,SpeedDial,SpeedDialIcon,Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Tooltip,Typography, TextField, FormControlLabel, FormControl, FormLabel, RadioGroup, FormHelperText, Radio,} from "@mui/material";
+import {Accordion,AccordionDetails,AccordionSummary,Alert,Button,Checkbox,IconButton,Paper,Skeleton,Snackbar,SpeedDial,SpeedDialIcon,Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Tooltip,Typography, TextField, FormControlLabel, FormControl, FormLabel, RadioGroup, FormHelperText, Radio, Chip,} from "@mui/material";
 import { Edit, EditOff, EditTwoTone } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TaskAltOutlined, TaskAltTwoTone } from "@mui/icons-material";
@@ -154,7 +154,7 @@ async function handleFilterFieldChange(b){
                       <TableCell align="left">&nbsp;</TableCell>
                       <TableCell align="left">Title&nbsp;</TableCell>
                       <TableCell align="left">Description&nbsp;</TableCell>
-                      <TableCell align="left">Date&nbsp;</TableCell>
+                      <TableCell align="left">Priority&nbsp;</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -184,9 +184,12 @@ async function handleFilterFieldChange(b){
                           <TableCell align="left">
                             {task.description.substring(0, 100)}
                           </TableCell>
+                       
                           <TableCell component="th" scope="row">
                             {" "}
-                            {task.date}
+                            {task.priority=="High" &&  <><WarningIcon/> <Chip label="High" color="danger" /></>}
+                            {task.priority=="Medium" &&  <><Chip label="Medium" color="success" /></> }
+                            {task.priority=="Low" &&   <Chip label="Low" color="danger" />}
                           </TableCell>
                           <TableCell align="left">
                           <Tooltip title="Edit">

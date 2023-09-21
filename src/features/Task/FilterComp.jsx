@@ -51,12 +51,12 @@ Done
 />
 </div>
 <div>
-Not Yet
+TODO
 <Radio
   onChange={() => setfilter(filter=>({...filter,isDone:false  }))}
   checked={filter.isDone==false}
   value={false}
-  label="Not Yet"
+  label="TODO"
   name="radio-buttons"
   inputProps={{ 'aria-label': 'Not Yet' }}
 />
